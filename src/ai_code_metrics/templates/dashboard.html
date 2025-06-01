@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Code Metrics Dashboard</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .card-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #6c757d;
+            margin: 0 0 10px 0;
+        }
+        
+        .card-value {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 0;
+            color: #0366d6;
+        }
+        
+        .chart-container {
+            margin-bottom: 40px;
+        }
+        
+        .chart {
+            width: 100%;
+            height: 400px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .details-table th, .details-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .details-table th {
+            background-color: #f1f1f1;
+        }
+        
+        .details-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .ai-assisted {
+            color: #0366d6;
+            font-weight: bold;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .summary-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        <div>
+            <h1>AI Code Metrics Dashboard</h1>
+            <p>Repository: <strong>{{ repository_name }}</strong></p>
+            <p>Report generated: <strong>{{ generation_date }}</strong></p>
+        </div>
+    </div>
+    
+    <div class="summary-cards">
+        <div class="card">
+            <h3 class="card-title">AI-Assisted Commits</h3>
+            <p class="card-value">{{ ai_commit_percentage }}%</p>
+            <p>{{ ai_commit_count }} of {{ total_commits }} commits</p>
+        </div>
+        
+        <div class="card">
+            <h3 class="card-title">AI-Generated Code</h3>
+            <p class="card-value">{{ ai_code_percentage }}%</p>
+            <p>{{ ai_lines_count }} of {{ total_lines }} lines</p>
+        </div>
+        
+        <div class="card">
+            <h3 class="card-title">Most Used Assistant</h3>
+            <p class="card-value">{{ top_assistant_name }}</p>
+            <p>{{ top_assistant_count }} commits</p>
+        </div>
+        
+        <div class="card">
+            <h3 class="card-title">Estimated Time Saved</h3>
+            <p class="card-value">{{ time_saved_hours }}h</p>
+            <p>${{ cost_savings }}</p>
+        </div>
+    </div>
+    
+    <div class="chart-container">
+        <h2>Commits Over Time</h2>
+        <div class="chart" id="commits-chart">
+            <!-- Chart will be rendered here -->
+            <img src="{{ commit_chart_path }}" alt="Commit activity chart" style="width: 100%; height: auto;">
+        </div>
+    </div>
+    
+    <div class="chart-container">
+        <h2>AI Assistant Usage</h2>
+        <div class="chart" id="assistant-chart">
+            <!-- Chart will be rendered here -->
+            <img src="{{ assistant_chart_path }}" alt="Assistant usage chart" style="width: 100%; height: auto;">
+        </div>
+    </div>
+    
+    <div class="chart-container">
+        <h2>Code Distribution</h2>
+        <div class="chart" id="code-distribution-chart">
+            <!-- Chart will be rendered here -->
+            <img src="{{ code_chart_path }}" alt="Code distribution chart" style="width: 100%; height: auto;">
+        </div>
+    </div>
+    
+    <h2>Recent Commits</h2>
+    <table class="details-table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Author</th>
+                <th>Message</th>
+                <th>Lines Added</th>
+                <th>AI Assisted</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for commit in recent_commits %}
+            <tr>
+                <td>{{ commit.date }}</td>
+                <td>{{ commit.author }}</td>
+                <td>{{ commit.message }}</td>
+                <td>{{ commit.lines_added }}</td>
+                <td>{% if commit.ai_assisted %}<span class="ai-assisted">Yes ({{ commit.ai_assistant }})</span>{% else %}No{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div class="footer">
+        <p>Generated by AI Code Metrics Framework</p>
+    </div>
+</body>
+</html>
