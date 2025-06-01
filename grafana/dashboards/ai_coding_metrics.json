@@ -1,0 +1,99 @@
+{
+  "dashboard": {
+    "title": "AI Coding Assistant Metrics",
+    "uid": "ai-coding-metrics",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Productivity Trend",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+        "targets": [
+          {
+            "expr": "rate(ai_coding_lines_generated_total[1h])",
+            "legendFormat": "Lines/hour - {{language}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "color": {"mode": "palette-classic"},
+            "custom": {
+              "lineInterpolation": "smooth",
+              "showPoints": "never"
+            }
+          }
+        }
+      },
+      {
+        "id": 2,
+        "title": "AI Usage by Model",
+        "type": "piechart",
+        "gridPos": {"h": 8, "w": 6, "x": 12, "y": 0},
+        "targets": [
+          {
+            "expr": "sum by (model) (increase(ai_coding_requests_total[24h]))",
+            "legendFormat": "{{model}}"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Code Quality Score",
+        "type": "gauge",
+        "gridPos": {"h": 8, "w": 6, "x": 18, "y": 0},
+        "targets": [
+          {
+            "expr": "avg(ai_coding_quality_score)",
+            "legendFormat": "Average Score"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "min": 0,
+            "max": 100,
+            "unit": "percent",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "red", "value": 0},
+                {"color": "yellow", "value": 60},
+                {"color": "green", "value": 80}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 4,
+        "title": "API Costs",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 6, "x": 0, "y": 8},
+        "targets": [
+          {
+            "expr": "sum(increase(ai_coding_api_cost_dollars[24h]))",
+            "legendFormat": "Daily Cost"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "currencyUSD",
+            "decimals": 2
+          }
+        }
+      },
+      {
+        "id": 5,
+        "title": "Response Time Distribution",
+        "type": "heatmap",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 12},
+        "targets": [
+          {
+            "expr": "sum(increase(ai_coding_response_time_seconds_bucket[5m])) by (le)",
+            "format": "heatmap"
+          }
+        ]
+      }
+    ]
+  }
+}
