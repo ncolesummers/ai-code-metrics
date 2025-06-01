@@ -1,0 +1,56 @@
+name: AI Metrics Collection
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  python-metrics:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Full history for git analysis
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    
+    - name: Install UV
+      run: pip install uv
+    
+    - name: Install dependencies
+      run: |
+        uv venv
+        uv sync --all-extras --dev
+    
+    - name: Run code quality analysis
+      id: quality
+      run: |
+        # Linting
+        uv run pylint src --output-format=json > pylint-report.json || true
+        
+        # Testing with coverage
+        uv run coverage run -m pytest
+        uv run coverage xml
+        uv run coverage report > coverage-report.txt
+        
+        # Security analysis
+        uv run bandit -r src -f json -o bandit-report.json || true
+        
+        # Extract metrics
+        uv run python scripts/collect_metrics.py --repo-path . --output metrics-summary.json
+    
+    - name: Upload metrics artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: quality-metrics-${{ github.sha }}
+        path: |
+          pylint-report.json
+          coverage.xml
+          bandit-report.json
+          metrics-summary.json
+          coverage-report.txt
