@@ -1,0 +1,15 @@
+{
+  "repository": "/Users/colesummers/Documents/GitHub/ai-code-metrics",
+  "period": "2025-05-01 to 2025-05-31",
+  "total_commits": 2,
+  "ai_assisted_commits": 0,
+  "ai_percentage": 0.0,
+  "total_lines_added": 1465,
+  "ai_lines_percentage": 0.0,
+  "ai_assistants": {},
+  "graphs": [
+    "/Users/colesummers/Documents/GitHub/ai-code-metrics/dashboard/commit_activity.png",
+    "/Users/colesummers/Documents/GitHub/ai-code-metrics/dashboard/assistant_breakdown.png",
+    "/Users/colesummers/Documents/GitHub/ai-code-metrics/dashboard/code_distribution.png"
+  ]
+}
