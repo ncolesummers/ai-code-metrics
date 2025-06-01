@@ -1,0 +1,7 @@
+#!/usr/bin/env python3
+"""Entry point script for AI Code Metrics."""
+
+from ai_code_metrics.cli import main
+
+if __name__ == "__main__":
+    main()
